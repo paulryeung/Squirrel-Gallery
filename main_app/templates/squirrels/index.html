@@ -6,6 +6,16 @@
 <div class="card">
   <div class="card-content">
     <span class="card-title">{{sq.name}}</span>
+    <p>Species: {{sq.species}}</p>
+    <p>Description: {{sq.description}}</p>
+    <p>Countries Found: {{sq.species}}</p>
+
+    {% if sq.age > 0 %}
+    <p>Age: {{sq.age}}</p>
+    {% else %}
+    <p>Age: kit</p>
+
+    {% endif %}
   </div>
 </div>
 
