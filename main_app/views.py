@@ -24,4 +24,4 @@ def about(request):
     return render(request, 'about.html')
 
 def index(request):
-    return render(request, 'squirrels/index.html')
+    return render(request, 'squirrels/index.html', {'squirrels': squirrels})
