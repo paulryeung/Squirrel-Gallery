@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Squirrel Details</h1>
+
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{squirrel.name}}</span>
+    <p>Species: {{squirrel.species}}</p>
+    <p>Description: {{squirrel.description}}</p>
+    <p>Countries Found: {{squirrel.country_found}}</p>
+
+    {% if squirrel.age > 0 %}
+    <p>Age: {{squirrel.age}}</p>
+    {% else %}
+    <p>Age: kit</p>
+    {% endif %}
+  </div>
+
+  <div class="card-action">
+    <a href="{% url 'squirrels_update' squirrel.id %}">Update</a>
+    <a href="{% url 'squirrels_delete' squirrel.id %}">Delete</a>
+  </div>
+</div>
+
+{% endblock %}
