@@ -1,24 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # from django.http import HttpResponse
-from . models import Squirrel
+from .models import Squirrel, Food
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-
-#For now put models here
-# class Squirrel:
-#     def __init__(self, name, species, description, country_found, age):
-#         self.name = name
-#         self.species = species
-#         self.description = description
-#         self.country_found = country_found
-#         self.age = age
-
-# squirrels = [
-#     Squirrel('Bob', "Eastern Gray", "gray and bushy", "Canada", 2),
-#     Squirrel('Nick', "American Red", "red and fury", "United States", 0),
-#     Squirrel('Jumpy', "Northern Flying", "jumps and glides", "Canada, United States", 4)
-# ]
-
-
+from django.views.generic import ListView, DetailView
+from .forms import VisitForm
 
 # Create your views here.
 def home(request):
@@ -33,7 +18,21 @@ def index(request):
 
 def squirrel_details(request, sq_id):
     squirrel = Squirrel.objects.get(id = sq_id)
-    return render(request, 'squirrels/detail.html', {'squirrel': squirrel})
+    visit_form = VisitForm()
+    return render(request, 'squirrels/detail.html', {'squirrel': squirrel, 'visit_form': visit_form})
+
+def add_visit(request, sq_id):
+
+    form = VisitForm(request.POST)
+
+    if form.is_valid():
+        new_visit = form.save(commit=False)
+        #squirrel_id is the reference of Squirrel's _id,
+        new_visit.squirrel_id = sq_id
+        new_visit.save()
+
+    return redirect('detail', sq_id = sq_id)
+
 
 class SqCreate(CreateView):
     model = Squirrel
@@ -46,3 +45,22 @@ class SqDelete(DeleteView):
 class SqUpdate(UpdateView):
     model = Squirrel
     fields = ['species', 'description', 'country_found', 'age']
+
+
+class FoodList(ListView):
+    model = Food
+
+class FoodDetail(DetailView):
+    model = Food
+
+class FoodUpdate(UpdateView):
+    model = Food
+    fields = ['name', 'foodtype']
+
+class FoodDelete(DeleteView):
+    model = Food
+    success_url = '/food/'
+
+def assoc_food(request, sq_id, food_id):
+    Squirrel.objects.get(id=sq_id).food.add(food_id)
+    return redirect('detail', sq_id = sq_id)

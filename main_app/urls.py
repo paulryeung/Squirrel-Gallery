@@ -9,5 +9,7 @@ urlpatterns = [
     path('squirrels/create/', views.SqCreate.as_view(), name='squirrels_create'),
     path('squirrels/<int:pk>/delete', views.SqDelete.as_view(), name='squirrels_delete'),
     path('squirrels/<int:pk>/update', views.SqUpdate.as_view(), name='squirrels_update'),
+    path('squirrels/<int:sq_id>/add_visit/', views.add_visit, name='add_visit'),
+    path('food/', views.FoodList.as_view(), name='food_index'),
 
 ]
