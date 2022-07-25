@@ -12,5 +12,6 @@ urlpatterns = [
     path('squirrels/<int:sq_id>/add_visit/', views.add_visit, name='add_visit'),
     path('food/', views.FoodList.as_view(), name='food_index'),
     path('food/<int:pk>/', views.FoodDetail.as_view(), name='food_detail'),
+    path('squirrel/<int:sq_id>/assoc_treat/<int:food_id>/', views.assoc_food, name='assoc_food'),
 
 ]

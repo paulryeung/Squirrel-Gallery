@@ -91,6 +91,15 @@
         </span>
       </div>
       <!--add button later-->
+      <div class="card-action">
+        <form
+          action="{% url 'assoc_food' squirrel.id treat.id %}"
+          method="post"
+        >
+          {% csrf_token %}
+          <button type="submit" class="btn">Add</button>
+        </form>
+      </div>
     </div>
     {% endfor %) {% else %}
     <h5>{{ squirrel.name }} Already Has All Treats Available!</h5>
