@@ -3,12 +3,13 @@
 <h1>Treat List</h1>
 
 {% for treat in food_list %}
-<!-- <a href="{% url 'food_detail' treat.id %}"> -->
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ treat.name }}</span>
-    <p>Food Type: {{ treat.foodtype }}</p>
+<a href="{% url 'food_detail' treat.id %}">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ treat.name }}</span>
+      <p>Food Type: {{ treat.foodtype }}</p>
+    </div>
   </div>
-</div>
-<!-- </a> -->
-{% endfor %} {% endblock %}
+  <!-- </a> -->
+  {% endfor %} {% endblock %}
+</a>
