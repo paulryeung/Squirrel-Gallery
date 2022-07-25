@@ -19,7 +19,16 @@ def index(request):
 def squirrel_details(request, sq_id):
     squirrel = Squirrel.objects.get(id = sq_id)
     visit_form = VisitForm()
-    return render(request, 'squirrels/detail.html', {'squirrel': squirrel, 'visit_form': visit_form})
+
+    #query finding all food treats squirrel doesn't have
+    treats_squirrel_doesnt_have = Food.objects.exclude(id__in = squirrel.food.all().values_list('id'))
+
+    #show visits form and treats squirrel doesn't have
+    return render(request, 'squirrels/detail.html', {
+        'squirrel': squirrel, 'visit_form': visit_form,
+        'treats': treats_squirrel_doesnt_have,
+        
+        })
 
 def add_visit(request, sq_id):
 
