@@ -5,6 +5,34 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView, DetailView
 from .forms import VisitForm
 
+#for user login and signup forms
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+
+#user signup
+def signup(request):
+    error_message=''
+    if request.method == 'POST':
+        # This is how to create a 'user' form object
+        # that includes the data from the browser
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            user=form.save()
+            #login via code
+            login(request, user)
+            return redirect('index')
+        else:
+            #error_message= 'Invalid sign up - try again'
+            error_message = form.errors
+
+    # A bad POST or a GET request, so render signup.html with an empty form
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)
+
+
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -45,7 +73,14 @@ def add_visit(request, sq_id):
 
 class SqCreate(CreateView):
     model = Squirrel
-    fields = '__all__'
+    #update this field, no longer '__all__' but specify fields ['name', 'age' ...]
+    fields = ['name', 'species', 'description', 'country_found', 'age']
+
+    def form_valid(self, form):
+        #assign logged in user to squirrel
+        form.instance.user = self.request.user  #form.instance is the squirrel
+        
+        return super().form_valid(form)
 
 class SqDelete(DeleteView):
     model = Squirrel
