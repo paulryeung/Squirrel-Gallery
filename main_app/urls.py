@@ -13,5 +13,6 @@ urlpatterns = [
     path('food/', views.FoodList.as_view(), name='food_index'),
     path('food/<int:pk>/', views.FoodDetail.as_view(), name='food_detail'),
     path('squirrel/<int:sq_id>/assoc_treat/<int:food_id>/', views.assoc_food, name='assoc_food'),
+    path('squirrel/<int:sq_id>/unassoc_treat/<int:food_id>/', views.unassoc_food, name='unassoc_food'),
     path('accounts/signup/', views.signup, name='signup'),
 ]

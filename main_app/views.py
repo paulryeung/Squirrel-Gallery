@@ -9,6 +9,10 @@ from .forms import VisitForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 
+#authorization
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 #user signup
 def signup(request):
     error_message=''
@@ -40,10 +44,12 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def index(request):
     squirrels = Squirrel.objects.all()
     return render(request, 'squirrels/index.html', {'squirrels': squirrels})
 
+@login_required
 def squirrel_details(request, sq_id):
     squirrel = Squirrel.objects.get(id = sq_id)
     visit_form = VisitForm()
@@ -58,6 +64,7 @@ def squirrel_details(request, sq_id):
         
         })
 
+@login_required
 def add_visit(request, sq_id):
 
     form = VisitForm(request.POST)
@@ -71,7 +78,7 @@ def add_visit(request, sq_id):
     return redirect('detail', sq_id = sq_id)
 
 
-class SqCreate(CreateView):
+class SqCreate(LoginRequiredMixin, CreateView):
     model = Squirrel
     #update this field, no longer '__all__' but specify fields ['name', 'age' ...]
     fields = ['name', 'species', 'description', 'country_found', 'age']
@@ -82,29 +89,35 @@ class SqCreate(CreateView):
         
         return super().form_valid(form)
 
-class SqDelete(DeleteView):
+class SqDelete(LoginRequiredMixin, DeleteView):
     model = Squirrel
     success_url = '/squirrels/'
 
-class SqUpdate(UpdateView):
+class SqUpdate(LoginRequiredMixin, UpdateView):
     model = Squirrel
     fields = ['species', 'description', 'country_found', 'age']
 
 
-class FoodList(ListView):
+class FoodList(LoginRequiredMixin, ListView):
     model = Food
 
-class FoodDetail(DetailView):
+class FoodDetail(LoginRequiredMixin, DetailView):
     model = Food
 
-class FoodUpdate(UpdateView):
+class FoodUpdate(LoginRequiredMixin, UpdateView):
     model = Food
     fields = ['name', 'foodtype']
 
-class FoodDelete(DeleteView):
+class FoodDelete(LoginRequiredMixin, DeleteView):
     model = Food
     success_url = '/food/'
 
+@login_required
 def assoc_food(request, sq_id, food_id):
     Squirrel.objects.get(id=sq_id).food.add(food_id)
+    return redirect('detail', sq_id = sq_id)
+
+@login_required
+def unassoc_food(request, sq_id, food_id):
+    Squirrel.objects.get(id=sq_id).food.remove(food_id)
     return redirect('detail', sq_id = sq_id)
