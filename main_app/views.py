@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
-from .models import Squirrel, Food
+from .models import Squirrel, Food, Visit
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView, DetailView
 from .forms import VisitForm
@@ -76,6 +76,12 @@ def add_visit(request, sq_id):
         new_visit.save()
 
     return redirect('detail', sq_id = sq_id)
+
+@login_required
+def clear_visit (request, sq_id):
+    Visit.objects.filter(squirrel_id = sq_id).delete()
+    return redirect('detail', sq_id = sq_id)
+    
 
 
 class SqCreate(LoginRequiredMixin, CreateView):

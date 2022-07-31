@@ -10,6 +10,7 @@ urlpatterns = [
     path('squirrels/<int:pk>/delete', views.SqDelete.as_view(), name='squirrels_delete'),
     path('squirrels/<int:pk>/update', views.SqUpdate.as_view(), name='squirrels_update'),
     path('squirrels/<int:sq_id>/add_visit/', views.add_visit, name='add_visit'),
+    path('squirrels/<int:sq_id>/clear_visit/', views.clear_visit, name='clear_visit'),
     path('food/', views.FoodList.as_view(), name='food_index'),
     path('food/<int:pk>/', views.FoodDetail.as_view(), name='food_detail'),
     path('squirrel/<int:sq_id>/assoc_treat/<int:food_id>/', views.assoc_food, name='assoc_food'),
